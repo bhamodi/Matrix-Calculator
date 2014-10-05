@@ -1,6 +1,6 @@
 /*******************************************************************************
 *   Name: Baraa Hamodi                                                         *
-*   Last Update Date: October 05/2014                                          *
+*   Last Update: October 05/2014                                               *
 *   Contents: A fully loaded matrix class capable of scalar multiplication,    *
 *             matrix addition, matrix multiplication, determinant finder, etc. *
 *******************************************************************************/
@@ -52,7 +52,7 @@ class Matrix {
             return matrix[row][col];
         }
         
-        // Get matrix size and populate all entries.
+        // Get matrix size and populate all matrix elements.
         void getInput() {
             do {
                 cout << "Rows = ";
@@ -148,7 +148,7 @@ class Matrix {
             displayResultMatrix(row, col);
         }
         
-        // Swaps two rows
+        // Swaps two rows.
         void swapRows(int row1, int row2) {
             if (row1 < row && row2 < row) {
                 int temp[1][col];
@@ -164,25 +164,10 @@ class Matrix {
         
         //TODO: refine algorithm for finding reduced row-echelon form of a matrix.
         void matrixRREF() {
-//            for (int c = 0; c < col; c++) {
-//                for (int r = 0; r < row; r++) {
-//                    if (matrix[c][c] != 1) {
-//                        for (int i = 0; i < col; i++) {
-//                            matrix[0][i] *= 1/matrix[0][0];
-//                        }
-//                    }
-//                    if (matrix[r+1][0] != 0) {
-//                        int num = matrix[r+1][0];
-//                        for (int k = 0; k < col; k++) {
-//                            matrix[r+1][k] += -1*num*matrix[0][k];
-//                        }
-//                    }
-//                }
-//            }
             int lead = 0;
             for (int r = 0; r < row; r++) {
                 if (col <= lead) {
-                    break;
+                    return;
                 }
                 int i = r;
                 while (matrix[i][lead] == 0) {
@@ -191,7 +176,7 @@ class Matrix {
                         i = r;
                         lead += 1;
                         if (col == lead) {
-                            break;
+                            return;
                         }
                     }
                 }
@@ -204,7 +189,7 @@ class Matrix {
                 for (int i = 0; i < row; i++) {
                     if (i != r) {
                         for (int j = 0; j < col; j++) {
-                            matrix[i][col] -= (matrix[i][lead] * matrix[r][col]);
+                            matrix[i][j] -= (matrix[i][lead] * matrix[r][j]);
                         }
                     }
                 }
@@ -213,6 +198,7 @@ class Matrix {
             displayMatrix();
         }
         
+        // TODO: Finds the determinant of a matrix.
         int determinantFinder() {
             if (col == row) {
                 //TODO
@@ -221,6 +207,7 @@ class Matrix {
             }
         }
         
+        // TODO: Inverses a matrix.
         void inverseMatrix() {
             if (col == row) {
                 //TODO
