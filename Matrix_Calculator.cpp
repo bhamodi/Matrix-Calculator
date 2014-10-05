@@ -162,17 +162,17 @@ class Matrix {
             }
         }
         
-        //TODO: refine algorithm for finding reduced row-echelon form of a matrix.
+        // Compute the reduced row-echelon form of a matrix.
         void matrixRREF() {
             int lead = 0;
             for (int r = 0; r < row; r++) {
-                if (col <= lead) {
+                if (lead >= col) {
                     return;
                 }
                 int i = r;
                 while (matrix[i][lead] == 0) {
                     i += 1;
-                    if (row == i) {
+                    if (i == row) {
                         i = r;
                         lead += 1;
                         if (col == lead) {
@@ -181,15 +181,17 @@ class Matrix {
                     }
                 }
                 swapRows(i, r);
+                int val = matrix[r][lead];
                 if (matrix[r][lead] != 0) {
                     for (int j = 0; j < col; j++) {
-                        matrix[r][j] /= matrix[r][lead];
+                        matrix[r][j] /= val;
                     }
                 }
                 for (int i = 0; i < row; i++) {
                     if (i != r) {
+                        int val = matrix[i][lead];
                         for (int j = 0; j < col; j++) {
-                            matrix[i][j] -= (matrix[i][lead] * matrix[r][j]);
+                            matrix[i][j] -= (val * matrix[r][j]);
                         }
                     }
                 }
@@ -265,7 +267,6 @@ int main () {
             cout << "Now enter yes to create a new matrix or no to use current matrix.\n";
             cin >> remakeMatrix;
             transform(remakeMatrix.begin(), remakeMatrix.end(), remakeMatrix.begin(), ::tolower);
-            cout << remakeMatrix;
             if (remakeMatrix == "yes") {
                 a.getInput();
             }
