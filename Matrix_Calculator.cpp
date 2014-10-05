@@ -1,6 +1,6 @@
 /*******************************************************************************
 *   Name: Baraa Hamodi                                                         *
-*   Last Update Date: 05/17/2014                                               *
+*   Last Update Date: October 05/2014                                          *
 *   Contents: A fully loaded matrix class capable of scalar multiplication,    *
 *             matrix addition, matrix multiplication, determinant finder, etc. *
 *******************************************************************************/
@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ class Matrix {
         int result[10][10];
     
     public:
-        // Default Constructor
+        // Default Constructor.
         Matrix() {
             row = 0;
             col = 0;
@@ -33,7 +34,7 @@ class Matrix {
             }
         }
         
-        // Constructor
+        // Constructor.
         Matrix(int r, int c, int s) {
             row = r;
             col = c;
@@ -46,11 +47,12 @@ class Matrix {
             }
         }
         
-        // Important hack
+        // Operator overload.
         int& operator()(int row, int col) {
             return matrix[row][col];
         }
         
+        // Get matrix size and populate all entries.
         void getInput() {
             do {
                 cout << "Rows = ";
@@ -71,6 +73,7 @@ class Matrix {
             }
         }
         
+        // Output the full matrix to the screen in matrix representation.
         void displayMatrix() {
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col; j++) {
@@ -80,6 +83,7 @@ class Matrix {
             }
         }
         
+        // Output the full resultant matrix to the screen in matrix representation.
         void displayResultMatrix(int rows, int cols) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
@@ -89,6 +93,7 @@ class Matrix {
             }
         }
         
+        // Perform scalar multiplication.
         void scalarMultiplication() {
             cout << "Enter a scalar to multiply the matrix by: ";
             cin >> scalar;
@@ -100,6 +105,7 @@ class Matrix {
             displayMatrix();
         }
         
+        // Perform matrix addition.
         void matrixAddition(Matrix m) {
             if (row == m.row && col == m.col) {
                 for (int i = 0; i < row; i++) {
@@ -113,6 +119,7 @@ class Matrix {
             }
         }
         
+        // Perform matrix multiplication.
         void matrixMultiplication(Matrix m) {
             if (col == m.row) {
                 for (int i = 0; i < row; i++) {
@@ -128,6 +135,7 @@ class Matrix {
             }
         }
         
+        // Transpose matrix.
         void transpose() {
             int temp = row;
             row = col;
@@ -140,29 +148,74 @@ class Matrix {
             displayResultMatrix(row, col);
         }
         
-        //NEEDS WORK
+        // Swaps two rows
+        void swapRows(int row1, int row2) {
+            if (row1 < row && row2 < row) {
+                int temp[1][col];
+                for (int i = 0; i < col; i++) {
+                    temp[0][i] = matrix[row1][i];
+                    matrix[row1][i] = matrix[row2][i];
+                    matrix[row2][i] = temp[0][i];
+                }
+            } else {
+                cout << "Could not access specified row to swap.\n";
+            }
+        }
+        
+        //TODO: refine algorithm for finding reduced row-echelon form of a matrix.
         void matrixRREF() {
-            for (int c = 0; c < col; c++) {
-                for (int r = 0; r < row; r++) {
-                    if (matrix[c][c] != 1) {
-                        for (int i = 0; i < col; i++) {
-                            matrix[0][i] *= 1/matrix[0][0];
-                        }
-                    }
-                    if (matrix[r+1][0] != 0) {
-                        int num = matrix[r+1][0];
-                        for (int k = 0; k < col; k++) {
-                            matrix[r+1][k] += -1*num*matrix[0][k];
+//            for (int c = 0; c < col; c++) {
+//                for (int r = 0; r < row; r++) {
+//                    if (matrix[c][c] != 1) {
+//                        for (int i = 0; i < col; i++) {
+//                            matrix[0][i] *= 1/matrix[0][0];
+//                        }
+//                    }
+//                    if (matrix[r+1][0] != 0) {
+//                        int num = matrix[r+1][0];
+//                        for (int k = 0; k < col; k++) {
+//                            matrix[r+1][k] += -1*num*matrix[0][k];
+//                        }
+//                    }
+//                }
+//            }
+            int lead = 0;
+            for (int r = 0; r < row; r++) {
+                if (col <= lead) {
+                    break;
+                }
+                int i = r;
+                while (matrix[i][lead] == 0) {
+                    i += 1;
+                    if (row == i) {
+                        i = r;
+                        lead += 1;
+                        if (col == lead) {
+                            break;
                         }
                     }
                 }
+                swapRows(i, r);
+                if (matrix[r][lead] != 0) {
+                    for (int j = 0; j < col; j++) {
+                        matrix[r][j] /= matrix[r][lead];
+                    }
+                }
+                for (int i = 0; i < row; i++) {
+                    if (i != r) {
+                        for (int j = 0; j < col; j++) {
+                            matrix[i][col] -= (matrix[i][lead] * matrix[r][col]);
+                        }
+                    }
+                }
+                lead += 1;
             }
             displayMatrix();
         }
         
         int determinantFinder() {
             if (col == row) {
-                //do
+                //TODO
             } else {
                 cout << "Cannot find the determinant of this matrix. (Must be nxn)\n";
             }
@@ -170,21 +223,20 @@ class Matrix {
         
         void inverseMatrix() {
             if (col == row) {
-                //do
+                //TODO
             } else {
                 cout << "Cannot invert this matrix. (Must be nxn)\n";
             }
         }
 };
 
-int main ()
-{
-	cout << "Welcome to Matrix Calculator V1.0 By Baraa Hamodi!\n\n"
+int main () {
+	cout << "Welcome to Matrix Calculator V1.1 By Baraa Hamodi!\n\n"
 	     << "Start by making your first matrix!\n";
     Matrix a;
 	a.getInput();
 	int choice;
-	string continueDecision, matrixDecision;
+	string proceed, remakeMatrix;
 	cout << "Now that you have this matrix:\n";
     a.displayMatrix();
     cout << "What would you like to do?\n"
@@ -211,24 +263,27 @@ int main ()
     	    b.getInput();
     	    a.matrixMultiplication(b);
     	} else if (choice == 4) {
-    	    //do
+    	    //TODO
     	} else if (choice == 5) {
     	    a.transpose();
     	} else if (choice == 6) {
-    	    //do
+    	    //TODO
     	} else if (choice == 7) {
     	    a.matrixRREF();
     	}
     	cout << "Continue? (Enter yes or no) ";
-        cin >> continueDecision;
-        if (continueDecision == "yes" || continueDecision == "Yes") {
+        cin >> proceed;
+        transform(proceed.begin(), proceed.end(), proceed.begin(), ::tolower);
+        if (proceed == "yes") {
             cout << "Now enter yes to create a new matrix or no to use current matrix.\n";
-            cin >> matrixDecision;
-            if (matrixDecision == "yes" || matrixDecision == "Yes") {
+            cin >> remakeMatrix;
+            transform(remakeMatrix.begin(), remakeMatrix.end(), remakeMatrix.begin(), ::tolower);
+            cout << remakeMatrix;
+            if (remakeMatrix == "yes") {
                 a.getInput();
             }
         }
-    } while(continueDecision == "yes" || continueDecision == "Yes");
+    } while(proceed == "yes");
     
 	system("PAUSE");
 	return EXIT_SUCCESS;
