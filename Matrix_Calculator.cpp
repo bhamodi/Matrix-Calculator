@@ -203,7 +203,33 @@ class Matrix {
         // TODO: Finds the determinant of a matrix.
         int determinantFinder() {
             if (col == row) {
-                //TODO
+                int determinant;
+                if (row == 1) {
+                    determinant = matrix[0][0];
+                } else if (row == 2) {
+                    determinant = (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
+                } else {
+                    for (int p = 0; p < row; p++) {
+                        int h = 0,
+                            k = 0;
+                        for (int i = 1; i < row; i ++) {
+                            for (int j = 0; j < n; j++) {
+                                if (j == p) {
+                                    continue;
+                                }
+                                // temp[h][k] = matrix[i][j];
+                                k++;
+                                if (k == n - 1) {
+                                    h++;
+                                    k = 0;
+                                }
+                            }
+                        }
+                        //determinant = determinant + matrix[0][p] * pow(-1, p) * determinantFinder(temp, n -1);
+                    }
+                    //return determinant;
+                }
+                cout << "The determinant of this matrix is: " << determinant << endl;
             } else {
                 cout << "Cannot find the determinant of this matrix. (Must be nxn)\n";
             }
@@ -252,11 +278,11 @@ int main () {
     	    b.getInput();
     	    a.matrixMultiplication(b);
     	} else if (choice == 4) {
-    	    //TODO
+    	    a.determinantFinder();
     	} else if (choice == 5) {
     	    a.transpose();
     	} else if (choice == 6) {
-    	    //TODO
+    	    a.inverseMatrix();
     	} else if (choice == 7) {
     	    a.matrixRREF();
     	}
