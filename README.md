@@ -10,5 +10,5 @@ A simple matrix calculator coded in C++. Looking forward to expanding operations
 + Matrix Multiplication
 + Matrix Transpose
 + Determine the RREF of a Matrix (Reduced Row Echelon Form)
-+ [*IN PROGRESS*] Determine the Determinant of a Matrix
-+ [*IN PROGRESS*] Inverse a Matrix
++ Find the Determinant of a Matrix [*IN PROGRESS*]
++ Inverse a Matrix [*IN PROGRESS*]
