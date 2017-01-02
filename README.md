@@ -1,6 +1,6 @@
 # Matrix-Calculator
 
-A simple matrix calculator coded in C++. Looking forward to expanding operations by designing new algorithms for the more complex matrix operations. This tool is unique because it elgantly outputs matrices in standard format. Currently supports matrices of up to 10x10 size.
+A simple matrix calculator coded in C++. Looking forward to expanding operations by designing new algorithms for the more complex matrix operations. This tool is unique because it elegantly outputs matrices in standard format. Currently supports matrices of up to 10x10 size.
 
 ## Supported Matrix Operations
 
